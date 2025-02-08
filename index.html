@@ -224,8 +224,9 @@
       };
 
       try {
+        
         const endpoint = currentLanguage === "english" ? "/registration/english" : "/registration/hindi";
-        const response = await fetch(`https://server-professional-website.onrender.com${endpoint}`, {
+        const response = await fetch(`https://server-professional-website.onrender.com/professionals`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
