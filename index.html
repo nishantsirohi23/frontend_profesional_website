@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    #loading {
+      display: none;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .language-toggle {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .language-toggle button {
+      width: auto;
+      padding: 5px 10px;
+      margin: 0 5px;
+      background-color: #007bff;
+    }
+
+    .language-toggle button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="language-toggle">
+      <button onclick="setLanguage('english')">English</button>
+      <button onclick="setLanguage('hindi')">हिंदी</button>
+    </div>
+    <h1 id="form-title">Professional Registration</h1>
+    <form id="professionalForm">
+      <div class="form-group">
+        <label id="label-name" for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label id="label-phone" for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+      </div>
+      <div class="form-group">
+        <label id="label-email" for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label id="label-category" for="category">Professional Category:</label>
+        <select id="category" name="category" required>
+          <option value="">Select Category</option>
+          <option value="Mechanic">Mechanic</option>
+          <option value="Carpenter">Carpenter</option>
+          <option value="Plumber">Plumber</option>
+          <option value="Electrician">Electrician</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label id="label-agency" for="agency">Are you an agency?</label>
+        <input type="checkbox" id="agency" name="agency">
+      </div>
+      <div class="form-group">
+        <label id="label-address" for="address">Address:</label>
+        <textarea id="address" name="address" rows="4" required></textarea>
+      </div>
+      <button type="submit" id="submit-button">Submit</button>
+      <div id="loading">
+        <div class="loader"></div>
+        <p id="loading-text">Submitting... Please wait.</p>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const translations = {
+      english: {
+        title: "Professional Registration",
+        name: "Name:",
+        phone: "Phone Number:",
+        email: "Email:",
+        category: "Professional Category:",
+        agency: "Are you an agency?",
+        address: "Address:",
+        submit: "Submit",
+        loading: "Submitting... Please wait."
+      },
+      hindi: {
+        title: "Professional Registration",
+        name: "नाम:",
+        phone: "फोन नंबर:",
+        email: "ईमेल:",
+        category: "पेशेवर श्रेणी:",
+        agency: "क्या आप एक एजेंसी हैं?",
+        address: "पता:",
+        submit: "जमा करें",
+        loading: "जमा किया जा रहा है... कृपया प्रतीक्षा करें।"
+      }
+    };
+
+    let currentLanguage = "english";
+
+    function setLanguage(language) {
+      currentLanguage = language;
+      updateFormLanguage();
+    }
+
+    function updateFormLanguage() {
+      const translation = translations[currentLanguage];
+      document.getElementById("form-title").textContent = translation.title;
+      document.getElementById("label-name").textContent = translation.name;
+      document.getElementById("label-phone").textContent = translation.phone;
+      document.getElementById("label-email").textContent = translation.email;
+      document.getElementById("label-category").textContent = translation.category;
+      document.getElementById("label-agency").textContent = translation.agency;
+      document.getElementById("label-address").textContent = translation.address;
+      document.getElementById("submit-button").textContent = translation.submit;
+      document.getElementById("loading-text").textContent = translation.loading;
+    }
+
+    document.getElementById("professionalForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      // Show loading indicator
+      const loadingElement = document.getElementById("loading");
+      loadingElement.style.display = "block";
+
+      // Collect form data
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
+      const category = document.getElementById("category").value;
+      const agency = document.getElementById("agency").checked;
+      const address = document.getElementById("address").value;
+
+      const payload = {
+        name: name,
+        phone: phone,
+        email: email,
+        category: category,
+        agency: agency,
+        address: address
+      };
+
+      try {
+        const endpoint = currentLanguage === "english" ? "/registration/english" : "/registration/hindi";
+        const response = await fetch(`https://server-professional-website.onrender.com${endpoint}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          alert(currentLanguage === "english" ? "Registration successful!" : "पंजीकरण सफल!");
+        } else {
+          const errorData = await response.json();
+          alert(`Registration failed: ${errorData.message || 'Unknown error'}`);
+        }
+      } catch (error) {
+        alert(`Error submitting form: ${error.message}`);
+      } finally {
+        // Hide loading indicator
+        loadingElement.style.display = "none";
+      }
+    });
+
+    // Initialize form in English
+    setLanguage("english");
+  </script>
+</body>
+</html>
